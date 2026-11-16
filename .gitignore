@@ -38,3 +38,9 @@ out/
 
 ### Local database credentials ###
 /src/main/resources/application.yaml
+
+### Local environment files and IDE run configurations ###
+.env
+.env.*
+*.env
+.run/

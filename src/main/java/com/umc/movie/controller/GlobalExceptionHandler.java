@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
+import com.umc.movie.exception.ApiException;
 
 @RestControllerAdvice //예외처리 결과를 JSON응답으로 반환하며 여러 컨트롤러에 적용가능(전역)
 public class GlobalExceptionHandler {
@@ -32,5 +33,11 @@ public class GlobalExceptionHandler {
         int status = exception.getStatusCode().value();
         return ResponseEntity.status(status)
                 .body(ApiResponse.failure("COMMON" + status, exception.getReason()));
+    }
+
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ApiResponse<Void>> handleApiException(ApiException exception) {
+        return ResponseEntity.status(exception.getStatus())
+                .body(ApiResponse.failure(exception.getCode(), exception.getMessage()));
     }
 }
